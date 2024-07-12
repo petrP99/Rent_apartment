@@ -2,7 +2,9 @@ package com.example.rent_module.service;
 
 import com.example.rent_module.module.entity.UserInfoEntity;
 import com.example.rent_module.repository.UserInfoRepository;
+
 import static java.util.Objects.isNull;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,16 +18,13 @@ public class AuthServiceImpl implements AuthService {
     public String registrationUser(UserInfoEntity userInfoEntity) {
         UserInfoEntity byNickName = userInfoRepository.findByNickName(userInfoEntity.getNickName());
         if (!isNull(byNickName)) throw new RuntimeException("Пользователь с таким никнеймом уже существует");
-        return null;
+        return "redirect:/auth";
     }
 }
 /**
-проверка на логин, если нету / регистрация иначе ошибка
-
- запрос чрз апигейтвейв
- сделать дто
- опционально генерация токена
-
-
-
+ * проверка на логин, если нету / регистрация иначе ошибка
+ * <p>
+ * запрос чрз апигейтвейв
+ * сделать дто
+ * опционально генерация токена
  */
