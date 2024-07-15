@@ -2,7 +2,7 @@ package com.example.rent_module.mapper;
 
 import com.example.rent_module.dto.UserCreateDto;
 import com.example.rent_module.dto.UserReadDto;
-import com.example.rent_module.module.entity.UserInfoEntity;
+import com.example.rent_module.entity.UserInfoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 

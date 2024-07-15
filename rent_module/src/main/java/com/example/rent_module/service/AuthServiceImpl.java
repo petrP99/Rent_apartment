@@ -3,18 +3,28 @@ package com.example.rent_module.service;
 import com.example.rent_module.dto.UserAuthDto;
 import com.example.rent_module.dto.UserCreateDto;
 import com.example.rent_module.dto.UserReadDto;
+import com.example.rent_module.entity.UserInfoEntity;
 import com.example.rent_module.exception.UserException;
+import com.example.rent_module.mapper.UserMapper;
 import com.example.rent_module.repository.UserInfoRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
+
+import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
+import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private static final String USER_NOT_FOUND = "Пользователь с таким логином не найден";
-    private final EntityManager entityManager;
+    private EntityManager entityManager;
 
     private final UserInfoRepository userInfoRepository;
 
@@ -30,22 +40,23 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public UserReadDto findByLogin(UserAuthDto userAuthDto) {
+    public Optional<UserReadDto> findByLogin(UserAuthDto userAuthDto) {
         userInfoRepository.findUserByLoginWithJPQL(userAuthDto.getLogin())
-                .orElseThrow(() -> new UserException(USER_NOT_FOUND, 700));
+                .orElseThrow(() -> new UserException(USER_NOT_FOUND, 1));
         return null;
     }
 
-//    private UserInfoEntity findUserByLoginCriteria(String login) {
-//        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-//        CriteriaQuery<UserInfoEntity> query = criteriaBuilder.createQuery(UserInfoEntity.class);
-//        Root<UserInfoEntity> root = query.from(UserInfoEntity.class);
-//
-//        query.select(root)
-//                .where(criteriaBuilder.equal(root.get("login"), login));
-//
-//        return entityManager.createQuery(query).getSingleResult();
-//    }
+    private UserInfoEntity findUserByLoginCriteria(String login) {
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<UserInfoEntity> query = criteriaBuilder.createQuery(UserInfoEntity.class);
+        Root<UserInfoEntity> root = query.from(UserInfoEntity.class);
+
+        query.select(root)
+                .where(criteriaBuilder.equal(root.get("login"), login));
+
+        return entityManager.createQuery(query).getSingleResult();
+    }
+
 
     /**
      * проверка ппароля чрз иквэлс, при несовпадении кастомная ошибка
