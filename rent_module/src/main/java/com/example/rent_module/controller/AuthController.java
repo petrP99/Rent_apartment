@@ -1,21 +1,35 @@
 package com.example.rent_module.controller;
 
+import static com.example.rent_module.controller.PathConstants.AUTH;
+import static com.example.rent_module.controller.PathConstants.BASE_PATH;
+import static com.example.rent_module.controller.PathConstants.MAIN;
 import static com.example.rent_module.controller.PathConstants.REGISTRATION;
-
-import com.example.rent_module.module.entity.UserInfoEntity;
+import com.example.rent_module.dto.UserAuthDto;
+import com.example.rent_module.dto.UserCreateDto;
+import com.example.rent_module.dto.UserReadDto;
+import com.example.rent_module.service.AuthService;
+import static java.util.Objects.isNull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class AuthController {
 
-    @PostMapping(REGISTRATION)
-    public String registrationUser(UserInfoEntity userInfoEntity) {
-        return null;
+    private final AuthService AuthService;
+
+    @PostMapping(AUTH)
+    public String authUser(@RequestBody UserAuthDto userAuthDto) {
+        UserReadDto mayBeUser = AuthService.findByLogin(userAuthDto);
+        if (isNull(mayBeUser)) return "redirect: " + REGISTRATION;
+        else return "redirect:" + MAIN;
     }
 
-    @GetMapping(BASE_PATH)
-    public String authUser(UserInfoEntity userInfoEntity) {
-        return null;
+    @PostMapping(REGISTRATION)
+    public String registrationUser(@RequestBody UserCreateDto userCreateDto) {
+        if (isNull((AuthService.registrationUser(userCreateDto)))) return REGISTRATION;
+        else return "redirect:" + BASE_PATH;
     }
 }
