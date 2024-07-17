@@ -8,8 +8,6 @@ import java.util.Optional;
 
 public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Long> {
 
-    UserInfoEntity findByNickName(String nickName);
-
     UserInfoEntity findByLogin(String login);
 
     @Query(nativeQuery = true, value = "select * from user_info where login = :login")

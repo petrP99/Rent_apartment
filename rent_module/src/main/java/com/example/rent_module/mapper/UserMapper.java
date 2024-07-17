@@ -13,7 +13,7 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    UserReadDto toDto(Optional<UserInfoEntity> user);
+    UserReadDto toDto(UserInfoEntity user);
     UserInfoEntity toEntity(UserCreateDto dto);
 
 }

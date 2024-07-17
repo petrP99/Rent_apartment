@@ -1,4 +1,4 @@
-package com.example.rent_module.module.entity;
+package com.example.rent_module.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

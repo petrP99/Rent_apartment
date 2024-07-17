@@ -4,6 +4,7 @@ import com.example.rent_module.dto.UserAuthDto;
 import com.example.rent_module.dto.UserCreateDto;
 import com.example.rent_module.dto.UserReadDto;
 import com.example.rent_module.entity.UserInfoEntity;
+import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
 import com.example.rent_module.exception.UserException;
 import com.example.rent_module.mapper.UserMapper;
 import com.example.rent_module.repository.UserInfoRepository;
@@ -11,14 +12,11 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
+import static java.util.Objects.isNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
-import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
-import static java.util.Objects.isNull;
 
 @Service
 @RequiredArgsConstructor
@@ -30,27 +28,23 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserReadDto registrationUser(UserCreateDto userCreateDto) {
-//        UserInfoEntity mayBeUser = userInfoRepository.findByLogin(userCreateDto.login());
-//        if (!isNull(mayBeUser)) throw new RuntimeException("Пользователь с таким ником уже существует");
-//        else {
-//            Optional<UserInfoEntity> newUser = userInfoRepository.save(UserMapper.INSTANCE.toEntity(userCreateDto));
-//            return UserMapper.INSTANCE.toDto(newUser);
-//        }
-        return null;
+        UserInfoEntity mayBeUser = userInfoRepository.findByLogin(userCreateDto.login());
+        if (!isNull(mayBeUser)) throw new RuntimeException("Пользователь с таким ником уже существует");
+        UserInfoEntity newUser = userInfoRepository.save(UserMapper.INSTANCE.toEntity(userCreateDto));
+        return UserMapper.INSTANCE.toDto(newUser);
     }
 
     @Override
     public Optional<UserReadDto> findByLogin(UserAuthDto userAuthDto) {
         userInfoRepository.findUserByLoginWithJPQL(userAuthDto.getLogin())
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND, 1));
-        return null;
+        return Optional.ofNullable(UserMapper.INSTANCE.toDto(findUserByLoginCriteria(userAuthDto.getLogin())));
     }
 
     private UserInfoEntity findUserByLoginCriteria(String login) {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<UserInfoEntity> query = criteriaBuilder.createQuery(UserInfoEntity.class);
         Root<UserInfoEntity> root = query.from(UserInfoEntity.class);
-
         query.select(root)
                 .where(criteriaBuilder.equal(root.get("login"), login));
 
@@ -58,20 +52,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
 
-    /**
-     * проверка ппароля чрз иквэлс, при несовпадении кастомная ошибка
-     * генерировать токен(стринговое значение + сетать его в поле токен в поле сущности) при успешной авторизации
-     * допилить критерию(критериярепозиторию и класс)
-     * вынести в род класс CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-     * //        CriteriaQuery<UserInfoEntity> query = criteriaBuilder.createQuery(UserInfoEntity.class);
-     * //        Root<UserInfoEntity> root = query.from(UserInfoEntity.class);
-     *
-     * валидаторХэндлер на имейл
-     * почитать типы джейсоны и работа с ним
-     *ьиьлиотека критерии
-     *
-     *
-     * */
+
 
 }
 
