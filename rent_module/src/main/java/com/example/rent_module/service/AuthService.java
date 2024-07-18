@@ -4,12 +4,11 @@ import com.example.rent_module.dto.UserAuthDto;
 import com.example.rent_module.dto.UserCreateDto;
 import com.example.rent_module.dto.UserReadDto;
 
-import java.util.Optional;
-
 public interface AuthService {
 
-    UserReadDto registrationUser(UserCreateDto userCreateDto);
+    UserReadDto createUser(UserCreateDto userCreateDto);
 
-    Optional<UserReadDto> findByLogin(UserAuthDto userAuthDto);
+    String findByLogin(UserAuthDto userAuthDto);
+
 
 }

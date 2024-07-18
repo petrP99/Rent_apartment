@@ -4,55 +4,57 @@ import com.example.rent_module.dto.UserAuthDto;
 import com.example.rent_module.dto.UserCreateDto;
 import com.example.rent_module.dto.UserReadDto;
 import com.example.rent_module.entity.UserInfoEntity;
+import static com.example.rent_module.exception.ExceptionConstants.INCORRECT_PASS;
 import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
 import com.example.rent_module.exception.UserException;
 import com.example.rent_module.mapper.UserMapper;
 import com.example.rent_module.repository.UserInfoRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Root;
+import jakarta.validation.Valid;
 import static java.util.Objects.isNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
+@Validated
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
 
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     private final UserInfoRepository userInfoRepository;
+    private final UserMapper userMapper;
+
 
     @Override
-    public UserReadDto registrationUser(UserCreateDto userCreateDto) {
+    public UserReadDto createUser(@Valid UserCreateDto userCreateDto) {
         UserInfoEntity mayBeUser = userInfoRepository.findByLogin(userCreateDto.login());
         if (!isNull(mayBeUser)) throw new RuntimeException("Пользователь с таким ником уже существует");
-        UserInfoEntity newUser = userInfoRepository.save(UserMapper.INSTANCE.toEntity(userCreateDto));
-        return UserMapper.INSTANCE.toDto(newUser);
+        UserInfoEntity newUser = userMapper.toEntity(userCreateDto);
+        UserInfoEntity savedUSer = userInfoRepository.save(newUser);
+        return userMapper.toDto(savedUSer);
     }
 
     @Override
-    public Optional<UserReadDto> findByLogin(UserAuthDto userAuthDto) {
-        userInfoRepository.findUserByLoginWithJPQL(userAuthDto.getLogin())
+    public String findByLogin(@Valid UserAuthDto userAuthDto) {
+        UserInfoEntity mayBeUser = userInfoRepository.findUserByLoginWithJPQL(userAuthDto.getLogin())
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND, 1));
-        return Optional.ofNullable(UserMapper.INSTANCE.toDto(findUserByLoginCriteria(userAuthDto.getLogin())));
+        if (!mayBeUser.getPassword().equals(userAuthDto.getPassword())) {
+            throw new UserException(INCORRECT_PASS, 2);
+        }
+        String token = generateToken();
+        mayBeUser.setToken(token);
+        userInfoRepository.save(mayBeUser);
+        return token;
     }
 
-    private UserInfoEntity findUserByLoginCriteria(String login) {
-        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-        CriteriaQuery<UserInfoEntity> query = criteriaBuilder.createQuery(UserInfoEntity.class);
-        Root<UserInfoEntity> root = query.from(UserInfoEntity.class);
-        query.select(root)
-                .where(criteriaBuilder.equal(root.get("login"), login));
-
-        return entityManager.createQuery(query).getSingleResult();
+    private String generateToken() {
+        return UUID.randomUUID() + "|" + LocalDateTime.now().plusDays(1L);
     }
-
-
-
 
 }
 
