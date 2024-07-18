@@ -4,14 +4,18 @@ import com.example.rent_module.dto.UserAuthDto;
 import com.example.rent_module.dto.UserCreateDto;
 import com.example.rent_module.dto.UserReadDto;
 import com.example.rent_module.entity.UserInfoEntity;
+
 import static com.example.rent_module.exception.ExceptionConstants.INCORRECT_PASS;
 import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
+
 import com.example.rent_module.exception.UserException;
 import com.example.rent_module.mapper.UserMapper;
 import com.example.rent_module.repository.UserInfoRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
+
 import static java.util.Objects.isNull;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -53,7 +57,10 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private String generateToken() {
+        String x = "5be1ed74-4a62-4c38-b663-462a6d7ebe97|2024-07-19T14:40:13.500885900";
+        LocalDateTime.parse(x);
         return UUID.randomUUID() + "|" + LocalDateTime.now().plusDays(1L);
+
     }
 
 }

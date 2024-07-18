@@ -7,14 +7,17 @@ import jakarta.validation.constraints.Size;
 
 public record UserCreateDto(
         @NotBlank
-        @Size(min = 3, message = "Ник должен быть не короче 3-х символов")
+        @Size(min = 3, message = NICK_LENGTH)
         String nickname,
         @NotBlank
-        @Email(message = "формат почты ***@***.ru")
+        @Email(message = EMAIL_FORMAT)
         String login,
         @NotBlank
-        @Size(min = 3, max = 20, message = "Пароль не короче 3х символов")
+        @Size(min = 3, max = 20, message = PASS_LENGTH)
         String password
-        //создать константы стринговых ошибок
 ) {
+    private static final String PASS_LENGTH = "Пароль не должен быть короче 3-х символов";
+    private static final String NICK_LENGTH = "Ник не должен быть короче 3-х символов";
+    private static final String EMAIL_FORMAT = "Email должен быть в формате ***@**.ru";
+
 }

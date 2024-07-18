@@ -15,7 +15,6 @@ public interface UserMapper {
     UserReadDto toDto(UserInfoEntity user);
 
     @Mapping(target = "nickName", source = "nickname")
-    @Mapping(target = "password", ignore = true)
     UserInfoEntity toEntity(UserCreateDto dto);
 
     @AfterMapping
@@ -23,6 +22,4 @@ public interface UserMapper {
         String password = userCreateDto.password();
         userInfoEntity.setPassword(password + "test");
     }
-
-
 }
