@@ -11,16 +11,19 @@ import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUN
 import com.example.rent_module.exception.UserException;
 import com.example.rent_module.mapper.UserMapper;
 import com.example.rent_module.repository.UserInfoRepository;
+import com.example.rent_module.util.DateParserUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.validation.Valid;
 
 import static java.util.Objects.isNull;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -57,11 +60,19 @@ public class AuthServiceImpl implements AuthService {
     }
 
     private String generateToken() {
-        String x = "5be1ed74-4a62-4c38-b663-462a6d7ebe97|2024-07-19T14:40:13.500885900";
-        LocalDateTime.parse(x);
         return UUID.randomUUID() + "|" + LocalDateTime.now().plusDays(1L);
-
     }
 
+    @Scheduled()
+    public void checkAndRemoveToken() {
+        List<UserInfoEntity> users = userInfoRepository.findAll();
+        users.stream()
+                .filter(user -> DateParserUtil.parseAndCheckDate(user.getToken()))
+                .toList().stream()
+                .map(userWithOldToken -> {
+                    userWithOldToken.setToken("");
+                    return userWithOldToken;
+                }).toList();
+    }
 }
 
