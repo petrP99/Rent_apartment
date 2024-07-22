@@ -15,18 +15,18 @@ import lombok.Data;
 public class UserInfoEntity {
 
     @Id
-    @SequenceGenerator(name = "user_infoSequence", sequenceName = "user_info_sequence", allocationSize = 1)
+    @SequenceGenerator(name = "user_infoSequence", sequenceName = "user_info_sequence", allocationSize = 1, initialValue = 2)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_infoSequence")
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "nick_name", nullable = false)
+    @Column(name = "nick_name")
     private String nickName;
 
-    @Column(name = "login", nullable = false)
+    @Column(name = "login_value", nullable = false)
     private String login;
 
-    @Column(name = "password")
+    @Column(name = "pass")
     private String password;
 
     @Column(name = "token")

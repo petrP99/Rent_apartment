@@ -1,11 +1,10 @@
 package com.example.rent_module.controller;
 
 import static com.example.rent_module.controller.PathConstants.AUTH;
-import static com.example.rent_module.controller.PathConstants.BASE_PATH_AUTH;
 import static com.example.rent_module.controller.PathConstants.REGISTRATION;
 import com.example.rent_module.dto.UserAuthDto;
 import com.example.rent_module.dto.UserCreateDto;
-import com.example.rent_module.service.AuthService;
+import com.example.rent_module.service.services.AuthService;
 import jakarta.validation.Valid;
 import static java.util.Objects.isNull;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,7 @@ public class AuthController {
     @PostMapping(REGISTRATION)
     public String registrationUser(@RequestBody @Valid UserCreateDto userCreateDto) {
         if (isNull((authService.createUser(userCreateDto)))) return REGISTRATION;
-        return "redirect:" + BASE_PATH_AUTH;
+        return String.format("пользователь %s успешно создан", userCreateDto.login());
     }
 
 }

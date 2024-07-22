@@ -3,21 +3,24 @@ package com.example.rent_module.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 
-public record UserCreateDto(
-        @NotBlank
-        @Size(min = 3, message = NICK_LENGTH)
-        String nickname,
-        @NotBlank
-        @Email(message = EMAIL_FORMAT)
-        String login,
-        @NotBlank
-        @Size(min = 3, max = 20, message = PASS_LENGTH)
-        String password
-) {
+@Data
+public class UserCreateDto {
+
     private static final String PASS_LENGTH = "Пароль не должен быть короче 3-х символов";
     private static final String NICK_LENGTH = "Ник не должен быть короче 3-х символов";
-    private static final String EMAIL_FORMAT = "Email должен быть в формате ***@**.ru";
+    private static final String INVALID_EMAIL = "Email должен быть в формате ***@**.ru";
 
+    @NotBlank
+    @Size(min = 3, message = NICK_LENGTH)
+    private String nickName;
+    @NotBlank
+    @Email(message = INVALID_EMAIL)
+    private String login;
+    @NotBlank
+    @Size(min = 3, max = 20, message = PASS_LENGTH)
+    private String password;
 }
+

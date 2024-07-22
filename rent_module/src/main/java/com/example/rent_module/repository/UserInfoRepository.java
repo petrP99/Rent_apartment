@@ -10,12 +10,12 @@ public interface UserInfoRepository extends JpaRepository<UserInfoEntity, Long> 
 
     UserInfoEntity findByLogin(String login);
 
+    @Query(value = "select u from UserInfoEntity u where u.token = :token")
+    Optional<UserInfoEntity> findByToken(String token);
+
+
     @Query(value = "select u from UserInfoEntity u where u.login = :login")
     Optional<UserInfoEntity> findUserByLoginWithJPQL(String login);
-
-
-
-
 
 
 }
