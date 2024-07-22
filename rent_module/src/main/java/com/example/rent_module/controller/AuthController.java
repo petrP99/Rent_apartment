@@ -26,7 +26,6 @@ public class AuthController {
     @PostMapping(REGISTRATION)
     public String registrationUser(@RequestBody @Valid UserCreateDto userCreateDto) {
         if (isNull((authService.createUser(userCreateDto)))) return REGISTRATION;
-        return String.format("пользователь %s успешно создан", userCreateDto.login());
+        return String.format("пользователь %s успешно создан", userCreateDto.getLogin());
     }
-
 }

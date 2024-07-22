@@ -21,23 +21,23 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     public String registerApartment(String token, String hotelName) {
-//        Optional<UserInfoEntity> user = userService.findByToken(token);
-//        if (user.isEmpty()) {
-//            throw new RuntimeException("Пользователь не найден");
-//        }
-//        Optional<Address> hotel = hotelRepository.findByName(hotelName);
-//        if (hotel.isEmpty()) {
-//            throw new RuntimeException("Отель с таким названием не найден");
-//        }
-//        Long apartmentId = hotel.map(Address::getApartment)
-//                .map(apartments -> apartments.stream().filter(Apartment::getStatus)).get()
-//                .findAny()
-//                .get().getId();
-//        Optional<Apartment> apartment = apartmentRepository.findById(apartmentId);
-//        apartment.get().setUserInfo(user.get());
-//        apartmentRepository.save(apartment.get());
-//        return String.format("Апартаменты №%d в отеле %s забронированы пользователем %s ", apartment.get().getNumber(),
-//                hotelName, user.get().getNickName());
+        Optional<UserInfoEntity> user = userService.findByToken(token);
+        if (user.isEmpty()) {
+            throw new RuntimeException("Пользователь не найден");
+        }
+        Optional<Address> hotel = hotelRepository.findByName(hotelName);
+        if (hotel.isEmpty()) {
+            throw new RuntimeException("Отель с таким названием не найден");
+        }
+        Long apartmentId = hotel.map(Address::getApartment)
+                .map(apartments -> apartments.stream().filter(Apartment::getStatus)).get()
+                .findAny()
+                .get().getId();
+        Optional<Apartment> apartment = apartmentRepository.findById(apartmentId);
+        apartment.get().setUserInfo(user.get());
+        apartmentRepository.save(apartment.get());
+        return String.format("Апартаменты №%d в отеле %s забронированы пользователем %s ", apartment.get().getNumber(),
+                hotelName, user.get().getNickName());
         return null;
     }
 
