@@ -4,24 +4,22 @@ import com.example.rent_module.dto.UserAuthDto;
 import com.example.rent_module.dto.UserCreateDto;
 import com.example.rent_module.dto.UserReadDto;
 import com.example.rent_module.entity.UserInfoEntity;
-import static com.example.rent_module.exception.ExceptionConstants.INVALID_PASS;
-import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
 import com.example.rent_module.exception.UserException;
 import com.example.rent_module.mapper.UserMapper;
 import com.example.rent_module.repository.UserInfoRepository;
 import com.example.rent_module.service.services.AuthService;
-import com.example.rent_module.util.DateParserUtil;
 import jakarta.validation.Valid;
-import static java.util.Objects.isNull;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static com.example.rent_module.exception.ExceptionConstants.INVALID_PASS;
+import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
+import static java.util.Objects.isNull;
 
 @Service
 @Validated
@@ -44,6 +42,7 @@ public class UserServiceImpl implements AuthService {
     public String findByLogin(@Valid UserAuthDto userAuthDto) {
         UserInfoEntity mayBeUser = userInfoRepository.findUserByLoginWithJPQL(userAuthDto.getLogin())
                 .orElseThrow(() -> new UserException(USER_NOT_FOUND, 1));
+        mayBeUser.setPassword(Base64EncoderDecoder.decode(mayBeUser.getPassword()));
         if (!mayBeUser.getPassword().equals(userAuthDto.getPassword())) {
             throw new UserException(INVALID_PASS, 2);
         }

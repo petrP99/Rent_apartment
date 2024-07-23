@@ -25,12 +25,6 @@ public class Apartment {
     @Column(name = "number")
     private Integer number;
 
-//    @Column(name = "check_in_date")
-//    private LocalDate checkInDate;
-//
-//    @Column(name = "check_out_date")
-//    private LocalDate checkOutDate;
-
     @Column(name = "status")
     private Boolean status;
 
@@ -40,9 +34,6 @@ public class Apartment {
     @OneToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private UserInfoEntity userInfo;
-
-    @OneToOne(mappedBy = "apartment")
-    private Address address;
 
 }
 

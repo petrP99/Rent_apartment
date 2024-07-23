@@ -1,6 +1,7 @@
 package com.example.rent_module.controller;
 
 import static com.example.rent_module.controller.PathConstants.REGISTRATION_APARTMENT;
+
 import com.example.rent_module.dto.RentCreateDto;
 import com.example.rent_module.service.ValidTokenServiceImpl;
 import com.example.rent_module.service.services.ApartmentService;
@@ -17,10 +18,9 @@ public class RentApartmentController {
     private final ValidTokenServiceImpl validTokenService;
     private final ApartmentService apartmentService;
 
-
     @PostMapping(REGISTRATION_APARTMENT)
-    public String registration(@RequestHeader String token, @RequestBody RentCreateDto createDto) { //добавить все поля с адреса+апартмент
+    public String registration(@RequestHeader String token, @RequestBody RentCreateDto createDto) {
         validTokenService.checkValidToken(token);
-        return apartmentService.registerApartment(token, createDto.getHotelName());
+        return apartmentService.registerApartment(token, createDto.getCity(), createDto.getStreet(), createDto.getNumber(), createDto.getPrice());
     }
 }

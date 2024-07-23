@@ -27,14 +27,14 @@ public class DataBaseRequest {
             if (operation.equals("create")) {
                 writer.write(String.format("%s table %s if not exists \n(\n", operation, tableName));
             } else
-                writer.write(String.format("%s table %s \n(", operation, tableName)); //использовать подставления из входных параметров(create/insert/drop) или делалть статичные разные методы
+                writer.write(String.format("%s table %s \n(", operation, tableName));
             for (Map.Entry<String, String> entry : map.entrySet()) {
                 writer.write(entry.getKey() + " " + entry.getValue());
                 if (entry != lastEntry) {
                     writer.write(",\n");
                 }
             }
-            writer.write("\n)");
+            writer.write(")");
         } catch (IOException e) {
             System.err.println("An error occurred: " + e.getMessage());
         }
