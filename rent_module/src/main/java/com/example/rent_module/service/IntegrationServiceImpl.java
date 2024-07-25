@@ -1,7 +1,7 @@
-package com.example.rent_module.service.services;
+package com.example.rent_module.service;
 
 import com.example.rent_module.dto.TestObjectDto;
-import com.example.rent_module.service.IntegrationService;
+import com.example.rent_module.service.services.IntegrationService;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -24,7 +24,6 @@ public class IntegrationServiceImpl implements IntegrationService {
                 HttpMethod.POST,
                 new HttpEntity<>(testObjectDto, prepareHeaders(token)),
                 String.class).getBody();
-
         return body;
     }
 
@@ -35,7 +34,5 @@ public class IntegrationServiceImpl implements IntegrationService {
         httpHeaders.setAll(map);
         return httpHeaders;
     }
-
-    //я погода получить погоду )строкой, все данные от него
 
 }

@@ -1,4 +1,4 @@
-package com.example.rent_module.service;
+package com.example.rent_module.service.services;
 
 public interface IntegrationService {
 

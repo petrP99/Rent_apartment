@@ -1,6 +1,5 @@
 package com.example.rent_module.controller;
 
-import static com.example.rent_module.controller.PathConstants.REGISTRATION_APARTMENT;
 import com.example.rent_module.dto.RentCreateDto;
 import com.example.rent_module.service.ValidTokenServiceImpl;
 import com.example.rent_module.service.services.ApartmentService;
@@ -10,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.example.rent_module.controller.PathConstants.REGISTRATION_APARTMENT;
 
 @RestController
 @RequiredArgsConstructor
@@ -28,4 +29,6 @@ public class RentApartmentController {
     public String getProduct() {
         return apartmentService.getIntegration();
     }
+
+
 }

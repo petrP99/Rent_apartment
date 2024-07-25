@@ -3,13 +3,20 @@ package com.example.rent_module.service;
 import com.example.rent_module.entity.Address;
 import com.example.rent_module.entity.Apartment;
 import com.example.rent_module.entity.UserInfoEntity;
+import com.example.rent_module.exception.ApartmentException;
+import com.example.rent_module.exception.UserException;
 import com.example.rent_module.repository.AddressRepository;
 import com.example.rent_module.repository.ApartmentRepository;
 import com.example.rent_module.service.services.ApartmentService;
+import com.example.rent_module.service.services.IntegrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+
+import static com.example.rent_module.exception.ExceptionConstants.ADDRESS_NOT_FOUND;
+import static com.example.rent_module.exception.ExceptionConstants.NOT_FREE_APARTMENT;
+import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -22,10 +29,10 @@ public class ApartmentServiceImpl implements ApartmentService {
 
     @Override
     public String registerApartment(String token, String city, String street, Integer number, Integer price) {
-        UserInfoEntity user = userService.findByToken(token).orElseThrow(() -> new RuntimeException("Пользователь не найден"));
+        UserInfoEntity user = userService.findByToken(token).orElseThrow(() -> new UserException(USER_NOT_FOUND, 1));
 
         Address address = addressRepository.findByCityAndStreet(city, street)
-                .orElseThrow(() -> new RuntimeException(String.format("Отель по адресу %s  в городе %s не найден", street, city)));
+                .orElseThrow(() -> new ApartmentException((String.format(ADDRESS_NOT_FOUND, street, city)), 3));
 
 
         if (address.getApartment().getStatus()) {
@@ -38,7 +45,7 @@ public class ApartmentServiceImpl implements ApartmentService {
             return String.format("Апартаменты №%d в г. %s по улице %s забронированы пользователем %s", apartment.get().getNumber(),
                     city, street, user.getNickName());
         }
-        return "Нет свободных апартаментов";
+        return NOT_FREE_APARTMENT;
     }
 
     @Override
