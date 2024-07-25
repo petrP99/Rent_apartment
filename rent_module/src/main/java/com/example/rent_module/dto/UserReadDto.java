@@ -1,10 +1,13 @@
 package com.example.rent_module.dto;
 
-public record UserReadDto(
-        Long id,
-        String nickName,
-        String login,
-        String password,
-        String token
-) {
+import lombok.Data;
+
+@Data
+public class UserReadDto {
+    private Long id;
+    private String nickName;
+    private String login;
+    private String password;
+    private String token;
+
 }

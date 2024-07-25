@@ -4,11 +4,14 @@ import com.example.rent_module.dto.UserAuthDto;
 import com.example.rent_module.dto.UserCreateDto;
 import com.example.rent_module.dto.UserReadDto;
 import com.example.rent_module.entity.UserInfoEntity;
+import static com.example.rent_module.exception.ExceptionConstants.INVALID_PASS;
+import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
 import com.example.rent_module.exception.UserException;
 import com.example.rent_module.mapper.UserMapper;
 import com.example.rent_module.repository.UserInfoRepository;
 import com.example.rent_module.service.services.AuthService;
 import jakarta.validation.Valid;
+import static java.util.Objects.isNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -16,10 +19,6 @@ import org.springframework.validation.annotation.Validated;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
-
-import static com.example.rent_module.exception.ExceptionConstants.INVALID_PASS;
-import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
-import static java.util.Objects.isNull;
 
 @Service
 @Validated

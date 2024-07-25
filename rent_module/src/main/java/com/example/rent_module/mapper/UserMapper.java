@@ -12,7 +12,7 @@ public interface UserMapper {
 
     UserReadDto toDto(UserInfoEntity user);
 
-//    @Mapping(target = "nickName", source = "nickname")
+    @Mapping(target = "nickName", source = "nickname")
     UserInfoEntity toEntity(UserCreateDto dto);
 
 }

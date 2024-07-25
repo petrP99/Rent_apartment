@@ -1,6 +1,7 @@
 package com.example.architect_module.model;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,13 +11,14 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
 
+@Service
 @RequiredArgsConstructor
-public class DataBaseRequest {
+public class DataBaseService {
 
     private final static String SQL = ".sql";
     private final static String DIRECTORY_PATH = "rent_module/src/main/resources/db/migration/";
 
-    public static void addFlywayScript(String tableName, String operation, Map<String, String> map) {
+    public  void addFlywayScript(String tableName, String operation, Map<String, String> map) {
 
         int currentVersion = readVersionFile(operation, tableName);// тут должен быть парсер
         int newVersion = currentVersion++;
