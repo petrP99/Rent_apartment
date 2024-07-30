@@ -13,8 +13,9 @@ import java.util.Map;
 public class ArchitectController {
 
     private final DataBaseService dataBaseService;
-    private final JdbcTemplate jdbcTemplate;
-    private final static String SQL_VERSION = "select version from flyway_schema_history order by version DESC limit 1";
+
+//    private final static String SQL_VERSION = """select version from flyway_schema_history order by version DESC limit 1""";
+
 
     @GetMapping("/script")
     public String createScript() {
@@ -33,7 +34,7 @@ public class ArchitectController {
     @GetMapping("/test")
     public int getTest() {
 
-        return jdbcTemplate.queryForObject(SQL_VERSION, Integer.class);
+//        return jdbcTemplate.queryForObject(SQL_VERSION, Integer.class);
 
     }
 }

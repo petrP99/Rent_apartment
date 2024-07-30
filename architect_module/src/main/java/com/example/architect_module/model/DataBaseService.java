@@ -1,6 +1,7 @@
 package com.example.architect_module.model;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedWriter;
@@ -17,8 +18,10 @@ public class DataBaseService {
 
     private final static String SQL = ".sql";
     private final static String DIRECTORY_PATH = "rent_module/src/main/resources/db/migration/";
+    private static final String SQL_VERSION = "select version from flyway_schema_history order by version desc limit 1";
+    private final JdbcTemplate jdbcTemplate;
 
-    public  void addFlywayScript(String tableName, String operation, Map<String, String> map) {
+    public void addFlywayScript(String tableName, String operation, Map<String, String> map) {
 
         int currentVersion = readVersionFile(operation, tableName);// тут должен быть парсер
         int newVersion = currentVersion++;
