@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface GeoCoderService {
 
-    List<RentReadDto> getApartamentsByLocation(String lat, String lon);
+    List<RentReadDto> getApartmentsByLocation(String lat, String lon);
 }

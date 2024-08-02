@@ -9,4 +9,4 @@ CREATE table if not exists address
 create sequence address_sequence start 2 increment 1;
 
 insert into address(id, city, street, house, apartment_id)
-VALUES (1, 'Москва', 'Дмитровка', '1д', 1)
+VALUES (1, 'Moscow', 'Red Square', '1d', 1)

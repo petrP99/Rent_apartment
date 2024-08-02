@@ -2,8 +2,9 @@ package com.example.rent_module.service;
 
 import com.example.rent_module.dto.RentReadDto;
 import com.example.rent_module.entity.Address;
+import com.example.rent_module.entity.Apartment;
 import com.example.rent_module.entity.IntegrationInfo;
-import com.example.rent_module.mapper.AddressMapper;
+import com.example.rent_module.mapper.RentReadMapper;
 import com.example.rent_module.repository.AddressRepository;
 import com.example.rent_module.repository.IntegrationInfoRepository;
 import com.example.rent_module.service.services.GeoCoderService;
@@ -22,22 +23,16 @@ public class GeoCoderServiceImpl implements GeoCoderService {
 
     private final IntegrationInfoRepository integrationInfoRepository;
     private final AddressRepository addressRepository;
-    private final AddressMapper addressMapper;
+    private final RentReadMapper rentReadMapper;
 
     private final String ID = "GEO";
 
-    @Override
-    public List<RentReadDto> getApartamentsByLocation(String lat, String lon) {
+    public List<RentReadDto> getApartmentsByLocation(String lat, String lon) {
         String city = findCityFromResponse(getResponseFromGeoCoder(lat, lon));
         List<Address> listAddress = addressRepository.findByCity(city);
-        var x = listAddress.stream()
-                .map(Address::getApartment)
-                .collect(Collectors.toList()).stream()
-                .map(AddressMapper::toDto).collect(Collectors.toList());
 
-        return null;
+        return listAddress.stream().map(address -> rentReadMapper.toDto(address, address.getApartment())).collect(Collectors.toList());
     }
-
 
     public String findCityFromResponse(String response) {
         return JsonParser.parseString(response)
@@ -45,7 +40,7 @@ public class GeoCoderServiceImpl implements GeoCoderService {
                 .getAsJsonArray().get(0)
                 .getAsJsonObject().get("components")
                 .getAsJsonObject().get("city")
-                .toString();
+                .getAsString();
     }
 
     private String getResponseFromGeoCoder(String lat, String lon) {
@@ -56,11 +51,6 @@ public class GeoCoderServiceImpl implements GeoCoderService {
                 .toEntity(String.class)
                 .getBody();
 
-//        RestTemplate restTemplate = new RestTemplate();
-//        return restTemplate.exchange(prepareUrl(lat, lon),
-//                HttpMethod.GET,
-//                new HttpEntity<>(null, null),
-//                String.class).getBody();
     }
 
     public String prepareUrl(String lat, String lon) {

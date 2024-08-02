@@ -9,4 +9,7 @@ CREATE table if not exists apartment
 create sequence apartment_sequence start 2 increment 1;
 
 insert into apartment(id, number, status, price, user_id)
-VALUES (1, 1, true, 100, 1)
+VALUES (1, 11, true, 100, 1),
+ (2, 17, true, 140, 1),
+ (3, 45, true, 170, 1),
+ (4, 48, true, 200, 1)

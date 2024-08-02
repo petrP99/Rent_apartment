@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public class AddressMapper {
+public class RentReadMapper {
 
 
     public RentReadDto toDto(Address address, Apartment apartment) {
