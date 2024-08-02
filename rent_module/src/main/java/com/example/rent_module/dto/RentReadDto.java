@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class RentReadDto {
 
-    //    private String token or login;
     private Long id;
     private String city;
     private String street;

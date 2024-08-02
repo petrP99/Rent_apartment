@@ -6,7 +6,9 @@ import com.example.rent_module.entity.UserInfoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.springframework.stereotype.Component;
 
+@Component
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 

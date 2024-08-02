@@ -17,8 +17,7 @@ public class GeoCoderController {
 
     @GetMapping("/geocoder")
     public List<RentReadDto> getLocation(@RequestParam String lat, @RequestParam String lon) {
-        geoCoderService.getLocation(lat, lon);
-        return null;
+        return geoCoderService.getApartamentsByLocation(lat, lon);
 
     }
 
