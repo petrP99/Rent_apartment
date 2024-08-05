@@ -2,7 +2,6 @@ package com.example.architect_module.controller;
 
 import com.example.architect_module.model.DataBaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +34,6 @@ public class ArchitectController {
     public int getTest() {
 
 //        return jdbcTemplate.queryForObject(SQL_VERSION, Integer.class);
-
+        return 0;
     }
 }

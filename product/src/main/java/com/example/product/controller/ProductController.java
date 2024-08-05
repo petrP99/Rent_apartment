@@ -1,7 +1,6 @@
 package com.example.product.controller;
 
 import com.example.product.dto.TestObjectDto;
-import com.example.product.dto.WeatherDto;
 import com.example.product.service.services.WeatherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;

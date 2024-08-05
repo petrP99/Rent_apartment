@@ -30,13 +30,12 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     public String registerApartment(String token, String city, String street, Integer number, Integer price) {
         UserInfoEntity user = userService.findByToken(token).orElseThrow(() -> new UserException(USER_NOT_FOUND, 1));
-
         Address address = addressRepository.findByCityAndStreet(city, street)
                 .orElseThrow(() -> new ApartmentException((String.format(ADDRESS_NOT_FOUND, street, city)), 3));
+        // проверить, будет ли ошибка если по такому айди нулл
+        Optional<Apartment> apartment = apartmentRepository.findById(address.getApartment().stream().findAny().get().getId());
 
-
-        if (address.getApartment().getStatus()) {
-            Optional<Apartment> apartment = apartmentRepository.findById(address.getApartment().getId());
+        if (apartment.isPresent()) {
             apartment.get().setUserInfo(user);
             apartment.get().setStatus(false);
             apartment.get().setNumber(number);

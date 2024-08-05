@@ -7,7 +7,6 @@ import jakarta.persistence.criteria.Root;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 @RequiredArgsConstructor
 public class CriteriaRepositoryImpl<T> implements CriteriaRepository<T> {

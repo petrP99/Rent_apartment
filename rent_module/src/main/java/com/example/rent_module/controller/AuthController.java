@@ -1,16 +1,17 @@
 package com.example.rent_module.controller;
 
-import static com.example.rent_module.controller.PathConstants.AUTH;
-import static com.example.rent_module.controller.PathConstants.REGISTRATION;
 import com.example.rent_module.dto.UserAuthDto;
 import com.example.rent_module.dto.UserCreateDto;
 import com.example.rent_module.service.services.AuthService;
 import jakarta.validation.Valid;
-import static java.util.Objects.isNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.example.rent_module.controller.PathConstants.AUTH;
+import static com.example.rent_module.controller.PathConstants.REGISTRATION;
+import static java.util.Objects.isNull;
 
 @RestController
 @RequiredArgsConstructor

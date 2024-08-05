@@ -1,10 +1,19 @@
 CREATE table if not exists user_info
 (
-    id          INT8 Primary key not null,
-    nick_name   varchar,
-    login_value varchar,
-    pass        varchar,
-    token       varchar
+    id
+    INT8
+    Primary
+    key
+    not
+    null,
+    nick_name
+    varchar,
+    login_value
+    varchar,
+    pass
+    varchar,
+    token
+    varchar
 );
 create sequence user_info_sequence start 2 increment 1;
 

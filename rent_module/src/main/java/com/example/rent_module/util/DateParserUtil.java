@@ -8,7 +8,8 @@ import java.time.LocalDateTime;
 public class DateParserUtil {
 
     private final char DELIMITER = '|';
-    public  boolean parseAndCheckDate(String token) {
+
+    public boolean parseAndCheckDate(String token) {
         int index = token.indexOf(DELIMITER);
         LocalDateTime dateAndTimeCurrentToken = LocalDateTime.parse(token.substring(index + 1));
         return LocalDateTime.now().isAfter(dateAndTimeCurrentToken);
