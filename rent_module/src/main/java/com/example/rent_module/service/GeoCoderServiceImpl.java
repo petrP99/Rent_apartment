@@ -1,6 +1,8 @@
 package com.example.rent_module.service;
 
 import com.example.rent_module.dto.RentReadDto;
+import com.example.rent_module.entity.Address;
+import com.example.rent_module.entity.Apartment;
 import com.example.rent_module.entity.IntegrationInfo;
 import com.example.rent_module.mapper.RentDtoMapper;
 import com.example.rent_module.repository.AddressRepository;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,13 +30,24 @@ public class GeoCoderServiceImpl implements GeoCoderService {
     private final String ID = "GEO";
 
     @Override
-    public List<RentReadDto> getApartamentsByLocation(String lat, String lon) {
+    public List<RentReadDto> getApartmentsByLocation(String lat, String lon) {
         String city = findCityFromResponse(getResponseFromGeoCoder(lat, lon));
 
-        return addressRepository.findByCity(city).stream()
-                .flatMap(address -> address.getApartment().stream()
-                        .map(apartment -> rentDtoMapper.toDto(address, apartment)))
-                .collect(Collectors.toList());
+//        return addressRepository.findByCity(city).stream()
+//                .flatMap(address -> address.getApartment().stream()
+//                        .map(apartment -> rentDtoMapper.toDto(address, apartment)))
+//                .collect(Collectors.toList());
+        List<Address> addresses = addressRepository.findByCity(city);
+        List<RentReadDto> rentDtos = new ArrayList<>();
+
+        for (Address address : addresses) {
+            for (Apartment apartment : address.getApartment()) {
+                RentReadDto rentDto = rentDtoMapper.toDto(address, apartment);
+                rentDtos.add(rentDto);
+            }
+        }
+
+        return rentDtos;
     }
 
     public String findCityFromResponse(String response) {
@@ -42,7 +56,7 @@ public class GeoCoderServiceImpl implements GeoCoderService {
                 .getAsJsonArray().get(0)
                 .getAsJsonObject().get("components")
                 .getAsJsonObject().get("city")
-                .toString();
+                .getAsString();
     }
 
     private String getResponseFromGeoCoder(String lat, String lon) {

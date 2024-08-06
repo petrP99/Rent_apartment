@@ -36,6 +36,6 @@ public class Address {
     private String house;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "apartment_id")
+//    @JoinColumn(name = "id")
     private List<Apartment> apartment;
 }

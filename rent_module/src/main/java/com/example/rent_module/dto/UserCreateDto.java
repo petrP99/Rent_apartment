@@ -13,8 +13,6 @@ public class UserCreateDto {
     private static final String NICK_LENGTH = "Ник не должен быть короче 3-х символов";
     private static final String INVALID_EMAIL = "Email должен быть в формате ***@**.ru";
 
-    //    @NotBlank
-//    @Size(min = 3, message = NICK_LENGTH)
     private String nickname;
     @NotBlank
     @Email(message = INVALID_EMAIL)

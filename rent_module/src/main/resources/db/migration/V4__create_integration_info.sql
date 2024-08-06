@@ -1,11 +1,8 @@
 CREATE table if not exists integration_info
 (
-    id
-    varchar,
-    path_info
-    varchar,
-    token
-    varchar
+    id        varchar,
+    path_info varchar,
+    token     varchar
 );
 
 

@@ -12,10 +12,10 @@ import org.springframework.stereotype.Component;
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface RentDtoMapper {
 
-    @Mapping(target = "addressId", source = "address.id")
-    @Mapping(target = "addressCity", source = "address.city")
-    @Mapping(target = "addressStreet", source = "address.street")
-    @Mapping(target = "addressHouse", source = "address.house")
+    @Mapping(target = "id", source = "address.id")
+    @Mapping(target = "city", source = "address.city")
+    @Mapping(target = "street", source = "address.street")
+    @Mapping(target = "house", source = "address.house")
     @Mapping(target = "number", source = "apartment.number")
     @Mapping(target = "status", source = "apartment.status")
     @Mapping(target = "price", source = "apartment.price")
