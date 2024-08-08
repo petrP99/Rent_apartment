@@ -20,6 +20,4 @@ public class GeoCoderController {
         return geoCoderService.getApartmentsByLocation(lat, lon);
 
     }
-
-
 }

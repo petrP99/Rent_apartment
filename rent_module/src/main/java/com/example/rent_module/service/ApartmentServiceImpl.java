@@ -1,10 +1,16 @@
 package com.example.rent_module.service;
 
+import com.example.rent_module.dto.ApartmentDto;
+import com.example.rent_module.dto.BookingApartmentRequest;
 import com.example.rent_module.entity.Address;
 import com.example.rent_module.entity.Apartment;
 import com.example.rent_module.entity.UserInfoEntity;
 import com.example.rent_module.exception.ApartmentException;
+import static com.example.rent_module.exception.ExceptionConstants.ADDRESS_NOT_FOUND;
+import static com.example.rent_module.exception.ExceptionConstants.NOT_FREE_APARTMENT;
+import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
 import com.example.rent_module.exception.UserException;
+import com.example.rent_module.mapper.ApartmentDtoMapper;
 import com.example.rent_module.repository.AddressRepository;
 import com.example.rent_module.repository.ApartmentRepository;
 import com.example.rent_module.service.services.ApartmentService;
@@ -14,10 +20,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-import static com.example.rent_module.exception.ExceptionConstants.ADDRESS_NOT_FOUND;
-import static com.example.rent_module.exception.ExceptionConstants.NOT_FREE_APARTMENT;
-import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
-
 @Service
 @RequiredArgsConstructor
 public class ApartmentServiceImpl implements ApartmentService {
@@ -26,14 +28,16 @@ public class ApartmentServiceImpl implements ApartmentService {
     private final AddressRepository addressRepository;
     private final ApartmentRepository apartmentRepository;
     private final IntegrationService integrationService;
+    private final ApartmentDtoMapper apartmentDtoMapper;
 
     @Override
     public String registerApartment(String token, String city, String street, Integer number, Integer price) {
         UserInfoEntity user = userService.findByToken(token).orElseThrow(() -> new UserException(USER_NOT_FOUND, 1));
         Address address = addressRepository.findByCityAndStreet(city, street)
                 .orElseThrow(() -> new ApartmentException((String.format(ADDRESS_NOT_FOUND, street, city)), 3));
+
         // проверить, будет ли ошибка если по такому айди нулл
-        Optional<Apartment> apartment = apartmentRepository.findById(address.getApartment().stream().findAny().get().getId());
+        Optional<Apartment> apartment = apartmentRepository.findById(address.getId());
 
         if (apartment.isPresent()) {
             apartment.get().setUserInfo(user);
@@ -50,6 +54,13 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     public String getIntegration() {
         return integrationService.productIntegration();
+    }
+
+    @Override
+    public BookingApartmentRequest findById(Long id) {
+        Apartment apartment = apartmentRepository.findById(id).orElseThrow(() -> new ApartmentException("Апартаментов не обнаружено", 10));
+        ApartmentDto dto = apartmentDtoMapper.toDto(apartment);
+        return new BookingApartmentRequest("Апартаменты доступны для брониварвания", dto);
     }
 }
 
