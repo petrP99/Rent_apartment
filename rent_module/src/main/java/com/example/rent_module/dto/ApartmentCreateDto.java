@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ApartmentDto {
+public class ApartmentCreateDto {
 
     private String city;
     private String street;

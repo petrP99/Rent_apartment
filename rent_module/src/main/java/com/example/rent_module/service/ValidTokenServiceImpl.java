@@ -16,8 +16,8 @@ public class ValidTokenServiceImpl implements ValidTokenService {
     private final UserInfoRepository userInfoRepository;
 
     @Override
-    public void checkValidToken(String token) {
-        userInfoRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Необходима авторизация"));
+    public UserInfoEntity checkValidToken(String token) {
+        return userInfoRepository.findByToken(token).orElseThrow(() -> new RuntimeException("Необходима авторизация"));
     }
 
     public void removeToken(UserInfoEntity userInfoEntity) {

@@ -4,6 +4,7 @@ package com.example.rent_module.service.services;
 import com.example.rent_module.dto.BookingApartmentRequest;
 import com.example.rent_module.entity.Apartment;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public interface ApartmentService {
@@ -13,5 +14,7 @@ public interface ApartmentService {
 
     String getIntegration();
 
-    BookingApartmentRequest findById(Long id);
+    String rentApartment(Long apartmentId, LocalDate startTime, LocalDate endTime);
+
+    //    BookingApartmentRequest findById(Long id);
 }

@@ -20,11 +20,10 @@ public class IntegrationServiceImpl implements IntegrationService {
         TestObjectDto testObjectDto = new TestObjectDto("Передаваемая строка");
         RestTemplate restTemplate = new RestTemplate();
         String token = "testToken";
-        String body = restTemplate.exchange(PRODUCT_URL,
+        return restTemplate.exchange(PRODUCT_URL,
                 HttpMethod.POST,
                 new HttpEntity<>(testObjectDto, prepareHeaders(token)),
                 String.class).getBody();
-        return body;
     }
 
     private HttpHeaders prepareHeaders(String token) {

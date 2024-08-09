@@ -1,11 +1,16 @@
 package com.example.rent_module.controller;
 
+import static com.example.rent_module.controller.PathConstants.INTEGRATION_PRODUCT;
 import static com.example.rent_module.controller.PathConstants.REGISTRATION_APARTMENT;
+
 import com.example.rent_module.dto.BookingApartmentRequest;
 import com.example.rent_module.dto.RentCreateDto;
+import com.example.rent_module.entity.UserInfoEntity;
 import com.example.rent_module.service.ValidTokenServiceImpl;
 import com.example.rent_module.service.services.ApartmentService;
+
 import static java.util.Objects.isNull;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -29,23 +35,18 @@ public class RentApartmentController {
         return apartmentService.registerApartment(token, createDto.getCity(), createDto.getStreet(), createDto.getNumber(), createDto.getPrice());
     }
 
-    @GetMapping("/integration/product")
-    public BookingApartmentRequest getBookingApartment(@RequestParam(required = false) LocalDateTime startTime,
-                                                       @RequestParam(required = false) LocalDateTime endTime,
+    @GetMapping(INTEGRATION_PRODUCT)
+    public String bookingApartment(@RequestParam(required = false) LocalDate startTime,
+                                                       @RequestParam(required = false) LocalDate endTime,
                                                        @RequestParam Long apartmentId,
                                                        @RequestHeader(required = false) String token) {
+
+        UserInfoEntity user = validTokenService.checkValidToken(token);
         if (isNull(startTime) && isNull(endTime)) {
-            return apartmentService.findById(apartmentId);
+            throw new RuntimeException("Не указаны даты заезда и выезда");
         }
-        /*метод проверки токена(не налл и соотвенствие в бд) - находим юзера
-        нов таблица букинг апартмент (начало/конце бронив  ссылка на юзера,  сылка на апартамента, ссылка на таблица продукты(придумать их, страовка/питание и тд,) цена за все дни,, количество дней)
-        * после бронирования статус фолсе + сообщение пользователю + заглушку под отправку имейла на будущее
-        после бронирования передать на клиент с продуктами
+        apartmentService.rentApartment(apartmentId, startTime, endTime);
 
-        вынести все константы
-
-
-        */
         return null;
     }
 

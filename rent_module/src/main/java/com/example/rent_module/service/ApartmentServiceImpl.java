@@ -6,9 +6,11 @@ import com.example.rent_module.entity.Address;
 import com.example.rent_module.entity.Apartment;
 import com.example.rent_module.entity.UserInfoEntity;
 import com.example.rent_module.exception.ApartmentException;
+
 import static com.example.rent_module.exception.ExceptionConstants.ADDRESS_NOT_FOUND;
 import static com.example.rent_module.exception.ExceptionConstants.NOT_FREE_APARTMENT;
 import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
+
 import com.example.rent_module.exception.UserException;
 import com.example.rent_module.mapper.RentDtoMapper;
 import com.example.rent_module.repository.AddressRepository;
@@ -18,6 +20,7 @@ import com.example.rent_module.service.services.IntegrationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -56,13 +59,24 @@ public class ApartmentServiceImpl implements ApartmentService {
         return integrationService.productIntegration();
     }
 
-    @Override
-    public BookingApartmentRequest findById(Long id) {
+
+    //    TODO рассмотреть вариант сделать метод воид
+    public BookingApartmentRequest checkApartmentById(Long id) {
         Apartment apartment = apartmentRepository.findById(id).orElseThrow(() -> new ApartmentException("Апартаментов не обнаружено", 10));
         Address address = addressRepository.findById(apartment.getAddress().getId()).get();
         RentReadDto dto = rentDtoMapper.toDto(address, apartment);
         return new BookingApartmentRequest("Апартаменты доступны для брониварвания", dto);
     }
+
+    public String rentApartment(Long apartmentId, LocalDate startTime, LocalDate endTime) {
+        BookingApartmentRequest bookingApartmentRequest = checkApartmentById(apartmentId);
+        RentReadDto rentReadDto = bookingApartmentRequest.getRentReadDto();
+
+
+
+        return null;
+    }
+
 }
 
 

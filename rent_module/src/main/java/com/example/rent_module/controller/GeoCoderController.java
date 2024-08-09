@@ -9,13 +9,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.example.rent_module.controller.PathConstants.GEOCODER;
+
 @RequiredArgsConstructor
 @RestController
 public class GeoCoderController {
 
     private final GeoCoderService geoCoderService;
 
-    @GetMapping("/geocoder")
+    @GetMapping(GEOCODER)
     public List<RentReadDto> getLocation(@RequestParam String lat, @RequestParam String lon) {
         return geoCoderService.getApartmentsByLocation(lat, lon);
 
