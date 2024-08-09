@@ -9,6 +9,7 @@ import com.example.rent_module.repository.ApartmentRepository;
 import com.example.rent_module.repository.IntegrationInfoRepository;
 import com.example.rent_module.service.services.GeoCoderService;
 import com.google.gson.JsonParser;
+import static java.util.Comparator.comparing;
 import static java.util.stream.Collectors.toList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpMethod;
@@ -40,13 +41,14 @@ public class GeoCoderServiceImpl implements GeoCoderService {
 
 
         return list.stream()
-                .flatMap(addressId -> apartmentRepository.findByAddressId(addressId).stream())
+                .flatMap(addressId -> apartmentRepository.findAllByAddressId(addressId).stream())
                 .map(apartment -> listAddressByCity.stream()
                         .filter(address -> address.getId().equals(apartment.getAddress().getId()))
                         .findFirst()
                         .map(address -> rentDtoMapper.toDto(address, apartment))
                         .orElseThrow(() -> new RuntimeException("Not found"))
                 )
+                .sorted(comparing(RentReadDto::getPrice))
                 .collect(Collectors.toList());
     }
 

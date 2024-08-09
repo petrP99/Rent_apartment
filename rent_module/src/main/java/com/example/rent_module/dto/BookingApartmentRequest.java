@@ -10,5 +10,5 @@ import lombok.Setter;
 public class BookingApartmentRequest {
 
     private String message;
-    private ApartmentDto apartmentDto;
+    private RentReadDto rentReadDto;
 }

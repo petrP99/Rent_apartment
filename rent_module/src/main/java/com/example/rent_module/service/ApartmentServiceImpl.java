@@ -1,7 +1,7 @@
 package com.example.rent_module.service;
 
-import com.example.rent_module.dto.ApartmentDto;
 import com.example.rent_module.dto.BookingApartmentRequest;
+import com.example.rent_module.dto.RentReadDto;
 import com.example.rent_module.entity.Address;
 import com.example.rent_module.entity.Apartment;
 import com.example.rent_module.entity.UserInfoEntity;
@@ -10,7 +10,7 @@ import static com.example.rent_module.exception.ExceptionConstants.ADDRESS_NOT_F
 import static com.example.rent_module.exception.ExceptionConstants.NOT_FREE_APARTMENT;
 import static com.example.rent_module.exception.ExceptionConstants.USER_NOT_FOUND;
 import com.example.rent_module.exception.UserException;
-import com.example.rent_module.mapper.ApartmentDtoMapper;
+import com.example.rent_module.mapper.RentDtoMapper;
 import com.example.rent_module.repository.AddressRepository;
 import com.example.rent_module.repository.ApartmentRepository;
 import com.example.rent_module.service.services.ApartmentService;
@@ -28,7 +28,7 @@ public class ApartmentServiceImpl implements ApartmentService {
     private final AddressRepository addressRepository;
     private final ApartmentRepository apartmentRepository;
     private final IntegrationService integrationService;
-    private final ApartmentDtoMapper apartmentDtoMapper;
+    private final RentDtoMapper rentDtoMapper;
 
     @Override
     public String registerApartment(String token, String city, String street, Integer number, Integer price) {
@@ -59,7 +59,8 @@ public class ApartmentServiceImpl implements ApartmentService {
     @Override
     public BookingApartmentRequest findById(Long id) {
         Apartment apartment = apartmentRepository.findById(id).orElseThrow(() -> new ApartmentException("Апартаментов не обнаружено", 10));
-        ApartmentDto dto = apartmentDtoMapper.toDto(apartment);
+        Address address = addressRepository.findById(apartment.getAddress().getId()).get();
+        RentReadDto dto = rentDtoMapper.toDto(address, apartment);
         return new BookingApartmentRequest("Апартаменты доступны для брониварвания", dto);
     }
 }
