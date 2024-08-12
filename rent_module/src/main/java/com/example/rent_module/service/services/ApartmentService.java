@@ -2,6 +2,7 @@ package com.example.rent_module.service.services;
 
 
 import com.example.rent_module.dto.BookingApartmentRequest;
+import com.example.rent_module.dto.ProductCreateDto;
 import com.example.rent_module.entity.Apartment;
 
 import java.time.LocalDate;
@@ -14,7 +15,6 @@ public interface ApartmentService {
 
     String getIntegration();
 
-    String rentApartment(Long apartmentId, LocalDate startTime, LocalDate endTime);
 
     //    BookingApartmentRequest findById(Long id);
 }

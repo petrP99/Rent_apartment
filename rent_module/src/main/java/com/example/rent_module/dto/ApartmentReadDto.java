@@ -1,5 +1,6 @@
 package com.example.rent_module.dto;
 
+import com.example.rent_module.entity.Address;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,5 +14,6 @@ public class ApartmentReadDto {
     private String house;
     private Integer number;
     private Integer price;
-    private String address;
+//    private Address address;
+
 }

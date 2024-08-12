@@ -15,10 +15,6 @@ public interface RentDtoMapper {
     @Mapping(target = "city", source = "address.city")
     @Mapping(target = "street", source = "address.street")
     @Mapping(target = "house", source = "address.house")
-    @Mapping(target = "number", source = "apartment.number")
-    @Mapping(target = "status", source = "apartment.status")
-    @Mapping(target = "price", source = "apartment.price")
-    RentReadDto toDto(Address address, Apartment apartment);
-
+    RentReadDto toDto(Apartment apartment);
 
 }

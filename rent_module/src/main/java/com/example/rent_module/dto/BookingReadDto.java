@@ -1,6 +1,5 @@
 package com.example.rent_module.dto;
 
-import com.example.rent_module.entity.Product;
 import lombok.Data;
 
 import java.time.LocalDate;
