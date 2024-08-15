@@ -6,6 +6,7 @@ import com.example.rent_module.dto.ProductCreateDto;
 import com.example.rent_module.dto.RentReadDto;
 import com.example.rent_module.entity.Apartment;
 import com.example.rent_module.entity.Booking;
+import com.example.rent_module.entity.Product;
 import com.example.rent_module.entity.UserInfoEntity;
 import com.example.rent_module.exception.ApartmentException;
 import com.example.rent_module.mapper.BookingMapper;
@@ -44,9 +45,8 @@ public class BookingServiceImpl implements BookingService {
         BookingApartmentRequest bookingApartmentRequest = checkApartmentById(apartmentId);
         RentReadDto rentReadDto = bookingApartmentRequest.getRentReadDto();
         Apartment apartment = apartmentRepository.findById(apartmentId).orElseThrow(() -> new ApartmentException("Апартаменты не доступны", 10));
-        var product = productRepository.save(productMapper.toEntity(productDto));
+        Product product = productRepository.save(productMapper.toEntity(productDto));
         int days = (int) ChronoUnit.DAYS.between(startTime, endTime);
-
         Booking savedBooking = bookingRepository.save(Booking.builder()
                 .startTime(startTime)
                 .endTime(endTime)
@@ -59,12 +59,16 @@ public class BookingServiceImpl implements BookingService {
 
         apartment.setStatus(false);
         apartmentRepository.save(apartment);
+        try {
+            // TODO: 14.08.2024 запрос в сервис продукт должен быть тут
+        } catch (Exception e) {
+            // TODO: 14.08.2024 в случае отсутствия ответа от продукта, то дто пробрасываем в топик кафки
+        }
         return bookingMapper.toDto(savedBooking);
     }
 
     @Override
     public BookingReadDto getBooking(Long id) {
         return bookingMapper.toDto(bookingRepository.findById(id).orElseThrow());
-
     }
 }

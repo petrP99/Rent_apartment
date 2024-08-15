@@ -14,6 +14,5 @@ public class ApartmentReadDto {
     private String house;
     private Integer number;
     private Integer price;
-//    private Address address;
 
 }

@@ -4,10 +4,11 @@ import lombok.Data;
 
 @Data
 public class UserReadDto {
+
     private Long id;
-    private String nickName;
+//    private String nickName;
     private String login;
-    private String password;
-    private String token;
+//    private String password;
+//    private String token;
 
 }
