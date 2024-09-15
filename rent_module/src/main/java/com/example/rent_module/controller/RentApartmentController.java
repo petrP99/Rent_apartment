@@ -45,7 +45,6 @@ public class RentApartmentController {
             throw new RuntimeException("Не указаны даты заезда и выезда");
         }
         return bookingService.bookingApartment(user, apartmentId, startTime, endTime, productDto);
-
     }
 
 }

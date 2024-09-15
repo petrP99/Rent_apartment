@@ -60,9 +60,9 @@ public class BookingServiceImpl implements BookingService {
         apartment.setStatus(false);
         apartmentRepository.save(apartment);
         try {
-            // TODO: 14.08.2024 запрос в сервис продукт должен быть тут
+            // TODO: 14.08.2024 запрос в сервис продукт должен быть тут + отправляется о бронировании письмо
         } catch (Exception e) {
-            // TODO: 14.08.2024 в случае отсутствия ответа от продукта, то дто пробрасываем в топик кафки
+            // TODO: 14.08.2024 в случае отсутствия ответа от продукта, то дто пробрасываем в топик кафки + вызывается меил сендер, что инфа придет в течение суток
         }
         return bookingMapper.toDto(savedBooking);
     }
